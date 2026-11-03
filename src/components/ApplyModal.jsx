@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { BENEFITS_NEEDING_HEALTH_INFO, BRAND, SKILLS } from '../data/catalog'
+import { BENEFITS_NEEDING_HEALTH_INFO, BRAND, SKILLS, TERMS } from '../data/catalog'
 import { useStore } from '../lib/store'
 import { ChipGroup, toggleIn } from './ui'
 
@@ -11,16 +11,17 @@ export function ApplyModal({ op, onClose, onDone }) {
     skills: state.profile.skills,
     message: '',
     sensitive: '',
+    adult: false,
     consent: false,
   })
   const asksHealth = op.benefits.some((b) => BENEFITS_NEEDING_HEALTH_INFO.includes(b))
   const set = (patch) => setForm((f) => ({ ...f, ...patch }))
-  const valid = form.name.trim() && /\S+@\S+\.\S+/.test(form.email) && form.consent
+  const valid = form.name.trim() && /\S+@\S+\.\S+/.test(form.email) && form.adult && form.consent
 
   const submit = (e) => {
     e.preventDefault()
     if (!valid) return
-    const { consent, ...application } = form
+    const { adult, consent, ...application } = form
     dispatch({ type: 'apply', application: { ...application, oppId: op.id } })
     dispatch({ type: 'updateProfile', profile: { name: form.name, email: form.email } })
     onDone()
@@ -62,6 +63,11 @@ export function ApplyModal({ op, onClose, onDone }) {
           <label className="check">
             <input type="checkbox" checked={form.consent} onChange={(e) => set({ consent: e.target.checked })} />
             Entiendo y acepto que mis datos se usen para esta solicitud.
+          </label>
+          <p>{TERMS.applyNotEmployment}</p>
+          <label className="check">
+            <input type="checkbox" checked={form.adult} onChange={(e) => set({ adult: e.target.checked })} />
+            {TERMS.applyAdult}
           </label>
         </div>
 

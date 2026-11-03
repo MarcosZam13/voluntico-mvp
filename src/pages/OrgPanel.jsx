@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { BENEFITS, DURATIONS, MAP_CENTER, PROVINCES, SKILLS, TYPES } from '../data/catalog'
+import { BENEFITS, DURATIONS, MAP_CENTER, PROVINCES, SKILLS, TERMS, TYPES } from '../data/catalog'
 import { ChipGroup, StatusBadge, Verified, labelsOf, toggleIn } from '../components/ui'
 import { ROUTES } from '../lib/router'
 import { useOrg, useStore } from '../lib/store'
@@ -106,8 +106,9 @@ export function OrgPanel() {
 function PublishForm({ onDone }) {
   const { dispatch } = useStore()
   const [f, setF] = useState(EMPTY_OP)
+  const [committed, setCommitted] = useState(false)
   const set = (patch) => setF((cur) => ({ ...cur, ...patch }))
-  const valid = f.title.trim() && f.place.trim() && f.summary.trim()
+  const valid = f.title.trim() && f.place.trim() && f.summary.trim() && committed
 
   const submit = (e) => {
     e.preventDefault()
@@ -159,6 +160,10 @@ function PublishForm({ onDone }) {
       <span className="label">Habilidades que ayudan</span>
       <ChipGroup name="Habilidades" options={SKILLS} selected={f.skills} onToggle={(k) => set({ skills: toggleIn(f.skills, k) })} />
       <p className="hint">No pidas pagos ni depósitos a los voluntarios: va contra las reglas de VolunTico.</p>
+      <label className="check">
+        <input type="checkbox" checked={committed} onChange={(e) => setCommitted(e.target.checked)} />
+        {TERMS.publishCommitment}
+      </label>
       <button className="btn" disabled={!valid}>Publicar</button>
     </form>
   )
