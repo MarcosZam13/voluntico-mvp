@@ -7,6 +7,15 @@ export const BRAND = {
   dataRequestDays: 10,
 }
 
+// Condiciones que protegen a voluntarios y comunidades. Se muestran y se aceptan
+// al solicitar o publicar: el voluntariado no reemplaza un empleo ni expone a menores.
+export const TERMS = {
+  minimumAge: 18,
+  applyAdult: 'Soy mayor de 18 años.',
+  applyNotEmployment: 'Esto es voluntariado: no es un empleo ni genera salario. Si te piden pagos, depósitos o tareas que no se publicaron, avísanos.',
+  publishCommitment: 'Confirmo que esta oportunidad no reemplaza un puesto de trabajo pagado, que las tareas y beneficios publicados son los reales y que, si hay menores de edad, una persona adulta responsable de la organización estará siempre presente.',
+}
+
 export const PROVINCES = [
   'San José',
   'Alajuela',
